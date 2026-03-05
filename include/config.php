@@ -1,9 +1,11 @@
-<?php 
-// DB credentials.
-define('DB_HOST','localhost');
-define('DB_USER','root');
-define('DB_PASS','');
-define('DB_NAME','tms');
+<?php
+// DB config — loads credentials from .env (never commit .env to git)
+$_env = parse_ini_file(__DIR__ . '/../.env');
+
+define('DB_HOST', $_env['DB_HOST']);
+define('DB_USER', $_env['DB_USERNAME']);
+define('DB_PASS', $_env['DB_PASSWORD']);
+define('DB_NAME', $_env['DB_NAME']);
 // Establish database connection.
 try
 {
