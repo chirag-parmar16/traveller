@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  ci:
+    name: PHP Syntax Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mysqli, pdo, pdo_mysql
+
+      - name: PHP syntax check (lint all .php files)
+        run: find . -name "*.php" -not -path "./.git/*" -not -path "./vendor/*" | xargs -I{} php -l {}
+
+      - name: Check Dockerfile exists
+        run: |
+          [ -f "Dockerfile" ] || { echo "❌ Dockerfile missing"; exit 1; }
+          echo "✅ Dockerfile present"
